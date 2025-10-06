@@ -2,14 +2,14 @@
 
 void PrintTimeItems(TimeItems TimeItemsvar)
 {
-    fprintf(stdout, "Time: %s, Rest time: %lu, Stretch time: %lu, Reps: %d", TimeItemsvar.currtimestring, TimeItemsvar.Rest_Intervals, 
+    fprintf(stdout, "Time: %s, Rest time: %lu, Stretch time: %lu, Reps: %d\n", TimeItemsvar.currtimestring, TimeItemsvar.Rest_Intervals, 
     TimeItemsvar.Rest_Intervals, TimeItemsvar.Repetitions);
     return;
 }
 
 TimeItems ReadDefaults(void)
 {
-    TimeItems ItemsRead;
+    static TimeItems ItemsRead;
     char currdir[BUFFSIZE]={'\0'};
     getcwd(currdir, BUFFSIZE);
     fprintf(stdout, "Your directory is: %s\n", currdir);
@@ -23,7 +23,7 @@ TimeItems ReadDefaults(void)
     }
     uint16_t Readsize=0;
     Readsize+=read(Sd, &ItemsRead, sizeof(TimeItems)); 
-    printf("Read %d of %d\n", Readsize, sizeof(TimeItems));
+    printf("Read %d of %lu\n", Readsize, sizeof(TimeItems));
     close(Sd);
     PrintTimeItems(ItemsRead);
     return ItemsRead;
@@ -37,7 +37,7 @@ TimeItems ReadDefaults(void)
     strncat(currdir, FileName, sizeof(char)*(BUFFSIZE-strlen(currdir)-strlen(FileName)));
     fprintf(stdout, "Writing to: %s\n", currdir);
     PrintTimeItems(SaveDefaults_SaveDefaults);
-    int Sd=open(currdir, O_CREAT | S_IRWXU | O_TRUNC, 0644);
+    int Sd=open(currdir, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     if(Sd<0)
     {
     perror("Error Opening File:");
@@ -45,7 +45,7 @@ TimeItems ReadDefaults(void)
     }
     uint16_t WriteSize=0;
     WriteSize=write(Sd, &SaveDefaults_SaveDefaults, sizeof(TimeItems));
-    printf("\nWritten %d of %d", WriteSize, sizeof(TimeItems));
+    printf("Written %d of %lu", WriteSize, sizeof(TimeItems));
     close(Sd);
     return EXIT_SUCCESS;
 }

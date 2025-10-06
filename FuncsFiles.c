@@ -8,6 +8,7 @@ void MkLine(uint32_t LineSize, char Symbal);
 void ExecuteStretch(const TimeItems ExecuteStretch_TimeItems);
 static char* SetTimeString(void);
 void EllapsedTime(time_t Seconds, bool PrintSecs);
+extern void PrintTimeItems(TimeItems TimeItemsvar);
 
 TimeItems SetTimeItems(void)
 {
@@ -38,6 +39,7 @@ void MkLine(uint32_t LineSize, char Symbal)
 
 void ExecuteStretch(const TimeItems ExecuteStretch_TimeItems)
 {
+    PrintTimeItems(ExecuteStretch_TimeItems);
     for(int count=1; count<=ExecuteStretch_TimeItems.Repetitions; count++)
     {
         STDLINE();
@@ -71,12 +73,11 @@ void EllapsedTime(time_t Seconds, bool PrintSecs)
     fputs("Segmentation Fault", stderr);
     exit(EXIT_FAILURE);
     }
-    time_t *TimeVar;
-    time_t StartTime=time(TimeVar);
+    time_t StartTime=time(NULL);
     while(true)
     {
     static time_t Prior_Time=0;
-    time_t EllapsedTime=time(TimeVar)-StartTime;
+    time_t EllapsedTime=time(NULL)-StartTime;
     if(PrintSecs && Prior_Time!=EllapsedTime)
     {
     printf("\t----->>>>>>You're on %ld of %ld seconds!\n", EllapsedTime, Seconds);

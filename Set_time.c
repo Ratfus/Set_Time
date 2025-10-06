@@ -15,7 +15,7 @@ int main()
     {
     fputs("Running Normal - using defaults...\n", stdout);
     TimeItems TimeItems_M=ReadDefaults();
-    strncpy(TimeItems_M.currtimestring, SetTimeString(), sizeof(TimeItems_M.currtimestring)-1);
+    PrintTimeItems(TimeItems_M);
     ExecuteStretch(TimeItems_M);
     }
     return EXIT_SUCCESS;
